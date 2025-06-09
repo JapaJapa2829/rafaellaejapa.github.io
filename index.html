@@ -1,200 +1,259 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rafaella & Japa — Amor nas Estrelas ✨</title>
-<style>
-  /* Fundo estrelado */
-  body, html {
-    margin: 0; padding: 0; height: 100%;
-    overflow-x: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-    color: white;
-  }
-  canvas {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 0;
-  }
-
-  /* Container central */
-  .container {
-    position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 20px 80px 20px;
-    text-align: center;
-  }
-
-  /* Frase enorme e estilizada */
-  h1 {
-    font-size: 4.5rem;
-    font-weight: 900;
-    margin-bottom: 30px;
-    line-height: 1.1;
-    color: #ff4da6;
-    text-shadow:
-      0 0 10px #ff80f9,
-      0 0 20px #ff4da6,
-      0 0 30px #ff3399,
-      0 0 40px #ff1a75;
-  }
-
-  /* Espaço para múltiplas frases, caso queira */
-  .subtitle {
-    font-size: 2.2rem;
-    font-weight: 400;
-    margin-bottom: 60px;
-    color: #ffa3ef;
-    text-shadow: 0 0 8px #ff80f9;
-  }
-
-  /* Fotos */
-  .photos {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-    margin-bottom: 80px;
-  }
-  .photos img {
-    border-radius: 25px;
-    max-width: 320px;
-    width: 100%;
-    box-shadow:
-      0 0 15px #ff66b2,
-      0 0 30px #ff3399;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-  }
-  .photos img:hover {
-    transform: scale(1.07) rotate(3deg);
-    box-shadow:
-      0 0 30px #ff80f9,
-      0 0 60px #ff4da6;
-  }
-
-  /* Créditos e assinatura */
-  footer {
-    font-size: 1.1rem;
-    font-style: italic;
-    color: #ffa3ef;
-    text-shadow: 0 0 6px #ffa3ef;
-  }
-
-  /* Player invisível */
-  audio {
-    display: none;
-  }
-
-  /* Responsivo */
-  @media (max-width: 600px) {
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 20px;
-    }
-    .subtitle {
-      font-size: 1.6rem;
-      margin-bottom: 40px;
-    }
-    .photos {
-      gap: 20px;
-    }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa História de Amor - Rafaella & Eu</title>
+    <meta name="description" content="Uma timeline romântica da nossa história de amor, momentos especiais e aniversários">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+    <style>
+        /* Animations and styling */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1s infinite;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        .heart {
+            position: absolute;
+            color: pink;
+            animation: float 4s ease-in-out infinite;
+        }
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background-color: rgba(157, 23, 77, 0.7);
+            padding: 10px;
+            border-radius: 50px;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div id="app" class="relative overflow-hidden">
+        <!-- Background Stars -->
+        <div id="stars" class="fixed inset-0 z-0"></div>
 
-<!-- Canvas das estrelas -->
-<canvas id="starfield"></canvas>
+        <!-- Music Player -->
+        <div class="music-player">
+            <audio id="background-music" loop>
+                <source src="" type="audio/mpeg">
+            </audio>
+            <button @click="toggleMusic" class="text-white px-4 py-2 rounded-full flex items-center"><span v-if="!isPlaying">▶️ Tocar Música</span><span v-else>⏸️ Pausar Música</span></button>
+        </div>
+        <!-- Main Content -->
+        <div class="relative z-10 container mx-auto px-4 py-8">
+            <header class="text-center mb-12">
+                <h1 class="text-4xl md:text-6xl font-bold text-pink-500 mb-4 floating">
+                    Nossa História de Amor
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300">Rafaella & leandro</p>
+            </header>
 
-<div class="container">
-  <h1>
-    Nosso amor é o universo infinito,<br />
-    a luz que guia nossas almas entre as estrelas,<br />
-    o brilho eterno que nem o tempo pode apagar.
-  </h1>
+            <!-- Timeline -->
+            <div class="max-w-4xl mx-auto">
+                <div class="relative">
+                    <!-- Timeline Line -->
+                    <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-pink-500"></div>
 
-  <div class="photos">
-    <img src="https://i.imgur.com/8Q7Zc1A.jpg" alt="Foto Rafaella" />
-    <img src="https://i.imgur.com/PGZh9GI.jpg" alt="Foto Japa" />
-  </div>
+                    <!-- Timeline Events -->
+                    <div class="space-y-12">
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pr-8 text-right">
+                                <div class="bg-pink-900 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                                    <h3 class="text-xl font-bold text-pink-300">Agosto 2024</h3>
+                                    <p class="text-gray-300">Nosso primeiro encontro ❤️</p>
+                                </div>
+                            </div>
+                            <div class="w-8 h-8 absolute left-1/2 transform -translate-x-1/2 bg-pink-500 rounded-full"></div>
+                        </div>
 
-  <footer>Com amor, para sempre 💖</footer>
-</div>
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pl-8">
+                                <div class="bg-pink-900 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                                    <h3 class="text-xl font-bold text-pink-300">28 de Agosto 2024</h3>
+                                    <p class="text-gray-300">Nosso primeiro beijo 💋</p>
+                                </div>
+                            </div>
+                            <div class="w-8 h-8 absolute left-1/2 transform -translate-x-1/2 bg-pink-500 rounded-full"></div>
+                        </div>
 
-<!-- Música de fundo instrumental sem copyright -->
-<audio autoplay loop>
-  <source src="https://cdn.pixabay.com/download/audio/2021/10/10/audio_c09eb1743f.mp3?filename=sad-lane-ambient-11470.mp3" type="audio/mpeg" />
-  Seu navegador não suporta áudio.
-</audio>
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pr-8 text-right">
+                                <div class="bg-pink-900 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                                    <h3 class="text-xl font-bold text-pink-300">31 de Dezembro 2024</h3>
+                                    <p class="text-gray-300">Primeiro Ano Novo juntos ✨</p>
+                                </div>
+                            </div>
+                            <div class="w-8 h-8 absolute left-1/2 transform -translate-x-1/2 bg-pink-500 rounded-full"></div>
+                        </div>
 
-<script>
-// Fundo estrelado animado
-const canvas = document.getElementById('starfield');
-const ctx = canvas.getContext('2d');
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pl-8">
+                                <div class="bg-pink-900 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                                    <h3 class="text-xl font-bold text-pink-300">30 de Janeiro 2025</h3>
+                                    <p class="text-gray-300">Meu aniversário com você 🎂</p>
+                                </div>
+                            </div>
+                            <div class="w-8 h-8 absolute left-1/2 transform -translate-x-1/2 bg-pink-500 rounded-full"></div>
+                        </div>
 
-let width, height;
-let stars = [];
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/2 md:pr-8 text-right">
+                                <div class="bg-pink-900 p-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform">
+                                    <h3 class="text-xl font-bold text-pink-300">25 de Maio 2025</h3>
+                                    <p class="text-gray-300">Seu aniversário, meu amor 🎉</p>
+                                </div>
+                            </div>
+                            <div class="w-8 h-8 absolute left-1/2 transform -translate-x-1/2 bg-pink-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-function init() {
-  resize();
-  createStars(180);
-  animate();
-}
+            <!-- Frases Românticas -->
+            <div class="mt-16 text-center space-y-6">
+                <div id="frases-container" class="space-y-6">
+                    <!-- Frases serão geradas dinamicamente pelo JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
 
-function resize() {
-  width = window.innerWidth;
-  height = window.innerHeight;
-  canvas.width = width;
-  canvas.height = height;
-}
+    <script>
+        const { createApp } = Vue;
 
-function createStars(count) {
-  stars = [];
-  for(let i = 0; i < count; i++) {
-    stars.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      radius: Math.random() * 1.3,
-      alpha: Math.random(),
-      dx: (Math.random() - 0.5) * 0.15,
-      dy: (Math.random() - 0.5) * 0.15
-    });
-  }
-}
+        // Vue application
+        createApp({
+            data() {
+                return {
+                    isPlaying: false,
+                    frases: []
+                }
+            },
+            mounted() {
+                this.createStars();
+                this.createFloatingHearts();
+                this.setupMusic();
+                this.generateFrases();
+            },
+            methods: {
+                toggleMusic() {
+                    const audio = document.getElementById('background-music');
+                    this.isPlaying ? audio.pause() : audio.play();
+                    this.isPlaying = !this.isPlaying;
+                },
+                createStars() {
+                    const starsContainer = document.getElementById('stars');
+                    for (let i = 0; i < 100; i++) {
+                        const star = document.createElement('div');
+                        star.className = 'star';
+                        star.style.width = Math.random() * 3 + 'px';
+                        star.style.height = star.style.width;
+                        star.style.left = Math.random() * 100 + 'vw';
+                        star.style.top = Math.random() * 100 + 'vh';
+                        star.style.animationDelay = Math.random() * 2 + 's';
+                        starsContainer.appendChild(star);
+                    }
+                },
+                createFloatingHearts() {
+                    setInterval(() => {
+                        const heart = document.createElement('div');
+                        heart.className = 'heart';
+                        heart.innerHTML = '❤️';
+                        heart.style.left = Math.random() * 100 + 'vw';
+                        heart.style.top = '100vh';
+                        heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                        heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                        document.body.appendChild(heart);
 
-function animate() {
-  ctx.clearRect(0, 0, width, height);
-  stars.forEach(star => {
-    star.x += star.dx;
-    star.y += star.dy;
-
-    if(star.x < 0) star.x = width;
-    else if(star.x > width) star.x = 0;
-    if(star.y < 0) star.y = height;
-    else if(star.y > height) star.y = 0;
-
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
-    ctx.shadowColor = 'white';
-    ctx.shadowBlur = 4;
-    ctx.fill();
-  });
-  requestAnimationFrame(animate);
-}
-
-window.addEventListener('resize', () => {
-  resize();
-  createStars(180);
-});
-
-init();
-</script>
-
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 5000);
+                    }, 1000);
+                },
+                setupMusic() {
+                    // Using SDK to generate audio with Lana Del Rey style
+                    const setupBackgroundMusic = async () => {
+                        try {
+                            // For demonstration, we'll use a placeholder URL
+                            // In a real implementation, you would use the SDK.ai.generateAudio method
+                            // and set the resulting base64 audio as the source
+                            const audioElement = document.getElementById('background-music');
+                            // Placeholder for Lana Del Rey style music
+                            audioElement.src = "https://example.com/lana-del-rey-style-music.mp3";
+                            audioElement.load();
+                        } catch (error) {
+                            console.error("Error setting up music:", error);
+                        }
+                    };
+                    
+                    setupBackgroundMusic();
+                },
+                generateFrases() {
+                    // Lista de frases românticas
+                    this.frases = [
+                        "Rafaella, você é o amor da minha vida, a razão pela qual meu coração bate mais forte a cada amanhecer e o motivo dos meus sorrisos mais sinceros quando o sol se põe.",
+                        "Cada momento ao seu lado é como uma página de um livro mágico que nunca quero parar de ler, onde cada capítulo é mais encantador que o anterior e nossa história se torna mais bela a cada dia.",
+                        "Nosso amor é infinito como o universo estrelado que nos observa todas as noites, sem início definido e sem fim à vista, apenas a certeza de que fomos feitos um para o outro.",
+                        "Seu sorriso ilumina todos os meus dias como o sol que desperta as flores mais belas do jardim, trazendo cor e vida para um mundo que seria cinza sem você ao meu lado.",
+                        "Quando estou com você, sinto que encontrei meu lugar no mundo, como se todas as estrelas do céu finalmente se alinhassem para mostrar o caminho que sempre deveria seguir - o caminho que me leva até você.",
+                        "Você é o sonho que eu não sabia que tinha, aquele desejo profundo que meu coração guardava em silêncio até o momento em que seus olhos encontraram os meus e tudo fez sentido.",
+                        "Meu coração bate mais forte quando estou perto de você, como se reconhecesse sua alma gêmea, aquela que foi destinada a completá-lo desde o início dos tempos.",
+                        "Cada dia ao seu lado é uma nova aventura que quero viver intensamente, descobrindo novos horizontes, criando memórias inesquecíveis e construindo um futuro onde nosso amor é o alicerce mais sólido.",
+                        "Nosso amor cresce a cada amanhecer e se fortalece a cada anoitecer, como uma árvore majestosa que estende suas raízes profundamente na terra e seus galhos em direção ao céu infinito.",
+                        "Você é a melhor parte de todas as minhas histórias, o personagem principal dos meus sonhos mais bonitos e a protagonista indiscutível da minha realidade mais feliz.",
+                        "Seu amor é como uma melodia que nunca sai da minha cabeça, tocando suavemente nos momentos de paz e intensamente nos instantes de paixão, criando a trilha sonora perfeita para nossa história.",
+                        "Nos seus olhos encontrei o universo que sempre procurei, com galáxias inteiras de sentimentos profundos e constelações de promessas que sei que serão cumpridas ao longo de nossa jornada juntos.",
+                        "Amar você é como respirar - natural, necessário e vital para minha existência; cada inspiração me lembra da sorte que tenho por ter você em minha vida e cada expiração leva embora qualquer dúvida sobre nosso destino compartilhado.",
+                        "Nosso amor é como as estrelas - mesmo na escuridão mais profunda, continua brilhando intensamente, guiando nossos passos e iluminando o caminho que percorremos juntos de mãos dadas.",
+                        "Em cada batida do meu coração, seu nome ecoa como uma doce melodia que acalma minha alma nos momentos difíceis e celebra comigo nas horas de alegria, um ritmo constante que dá sentido à minha existência.",
+                        "Seu abraço é o lugar mais seguro que já conheci neste mundo, um refúgio onde posso ser verdadeiramente eu mesmo, onde todos os problemas parecem pequenos e onde o amor reina soberano sobre qualquer adversidade.",
+                        "Quando penso em felicidade, penso em todos os momentos que passamos juntos, desde os grandes acontecimentos até os pequenos instantes cotidianos que, somados, formam o tesouro mais valioso que poderia desejar.",
+                        "Você me faz acreditar que o amor verdadeiro existe e é mais bonito do que eu jamais poderia imaginar, superando as histórias mais românticas já contadas e provando que a realidade pode ser mais extraordinária que qualquer fantasia.",
+                        "Se eu pudesse te dar uma coisa na vida, daria a capacidade de se ver através dos meus olhos, para que pudesse contemplar a pessoa incrível, forte e maravilhosa que vejo todos os dias e que me deixa sem fôlego com sua beleza interior e exterior.",
+                        "Meu amor por você é como o oceano, profundo, vasto e sem fim, com ondas de paixão que às vezes são suaves como uma carícia e outras vezes intensas como uma tempestade, mas sempre constantes e verdadeiras.",
+                        "Você não é apenas parte da minha vida, você é a razão pela qual minha vida é tão maravilhosa, transformando dias comuns em momentos extraordinários e fazendo-me agradecer por cada segundo que tenho o privilégio de passar ao seu lado.",
+                        "Cada segundo longe de você parece uma eternidade dolorosa, cada momento juntos passa como um piscar de olhos encantado, como se o tempo conspirasse para nos mostrar que o que sentimos transcende suas leis implacáveis.",
+                        "Seu amor transformou minha vida em um conto de fadas que nunca quero que termine, onde cada capítulo é mais surpreendente que o anterior e onde sei que, não importa os desafios, nosso final feliz está garantido pelo poder do que sentimos.",
+                        "Você é a resposta para todas as perguntas que meu coração já fez ao longo da vida, o destino de uma busca que nem sabia que estava empreendendo até encontrar em seus olhos o reflexo da minha própria alma.",
+                        "Quando estamos juntos, até o tempo parece conspirar a nosso favor, desacelerando nos momentos de felicidade para que possamos saboreá-los plenamente e acelerando durante as dificuldades para que logo possamos sorrir novamente.",
+                        "Seu amor é a luz que guia meu caminho nos dias mais escuros, um farol constante que me impede de me perder nas tempestades da vida e me traz de volta ao porto seguro que construímos juntos com cada gesto de carinho.",
+                        "Você me faz querer ser uma pessoa melhor a cada dia, não por obrigação ou cobrança, mas porque seu amor me inspira a crescer, a evoluir e a me tornar alguém digno da dádiva que é ter você ao meu lado.",
+                        "Nosso amor é como um vinho raro - fica melhor com o tempo, ganhando profundidade, complexidade e uma doçura incomparável que só aqueles que sabem esperar e cultivar pacientemente podem um dia experimentar.",
+                        "Você é a poesia que nunca consegui escrever, a música que nunca consegui compor, a obra de arte que nunca consegui pintar - a expressão mais pura e sublime de tudo o que há de belo neste mundo.",
+                        "Se o universo conspirasse para criar o amor perfeito, ele criaria exatamente o que sinto por você - uma força tão poderosa que desafia a lógica, transcende o tempo e espaço, e me faz acreditar que fomos feitos um para o outro desde o início da criação."
+                    ];
+                    
+                    // Exibir as frases no container
+                    const container = document.getElementById('frases-container');
+                    container.innerHTML = '';
+                    
+                    this.frases.forEach((frase, index) => {
+                        const p = document.createElement('p');
+                        p.className = 'text-2xl text-pink-300 italic floating';
+                        p.style.animationDelay = (index * 0.5) + 's';
+                        p.textContent = `"${frase}"`;
+                        container.appendChild(p);
+                    });
+                }
+            }
+        }).mount('#app');
+    </script>
 </body>
 </html>
